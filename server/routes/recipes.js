@@ -1,9 +1,11 @@
 import express from "express";
 import RecipeModel from "../Model/Recipes.js";
 import UserModel from "../Model/Schema.js";
+import { verifyJWT } from "../middleware/auth.js";
 
 const router = express.Router();
 
+// creating a recipe
 router.post("/create", async (req, res) => {
   const { name, ingredients, instructions, imageUrl, cookingTime, userOwner } =
     req.body;
@@ -34,13 +36,16 @@ router.post("/create", async (req, res) => {
   }
 });
 
-router.get("/getall", async (req, res) => {
+// get all recipes
+router.get("/getall", verifyJWT, async (req, res) => {
+  const user = req.user;
   try {
     const getRecipes = await RecipeModel.find({});
 
     res.status(200).json({
       status: true,
       data: getRecipes,
+      user: user,
     });
   } catch (err) {
     console.log(err);
@@ -51,6 +56,7 @@ router.get("/getall", async (req, res) => {
   }
 });
 
+// get saved recipes
 router.get("/savedrecipes/id/:userId", async (req, res) => {
   try {
     const user = await UserModel.findById(req.params.userId);

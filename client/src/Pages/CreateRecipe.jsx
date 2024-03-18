@@ -13,7 +13,7 @@ const CreateRecipe = () => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setRecipe({ ...recipe, [name]: value });
-    console.log(recipe);
+    // console.log(recipe);
   };
 
   const handleIngredientChange = (event, idx) => {
@@ -28,11 +28,12 @@ const CreateRecipe = () => {
     setRecipe({ ...recipe, ingredients });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const { name, ingredients, imageUrl, cookingTime, instructions } = recipe;
     try {
-      const response = await fetch("http://localhost:5000/api/register", {
-        method: "PUT",
+      const response = await fetch("http://localhost:5000/api/create", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -42,11 +43,10 @@ const CreateRecipe = () => {
           imageUrl: imageUrl,
           cookingTime: cookingTime,
           instructions: instructions,
-          userOwner: "",
+          userOwner: "65dc0aa6e4cc6b07a994bb51",
         }),
       });
       const data = await response.json();
-
       console.log(data);
     } catch (err) {
       console.log(err);

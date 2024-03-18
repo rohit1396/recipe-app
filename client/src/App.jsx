@@ -6,6 +6,7 @@ import SavedRecipes from "./Pages/SavedRecipes";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Navbar from "./components/Navbar";
+import Logout from "./components/Logout";
 
 const App = () => {
   return (
@@ -56,6 +57,7 @@ const App = () => {
             </>
           }
         />
+        <Route path="/logout" element={<Logout />} />
       </Routes>
     </div>
   );

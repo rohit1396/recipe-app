@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/context";
 
 const Login = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { setLocalStorage } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,11 +24,13 @@ const Login = () => {
       });
 
       const data = await response.json();
+      console.log(data);
 
-      if (response.status === 400 || !data) {
+      if (response.status === 404 || !data) {
         window.alert("Login Failed");
       } else {
         window.alert("Login Successfully");
+        setLocalStorage(data.accessToken);
         navigate("/");
       }
     } catch (err) {

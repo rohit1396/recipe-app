@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { GrClose } from "react-icons/gr";
+import { useAuth } from "../context/context";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
+  const { userLoggedIn } = useAuth();
   return (
     <div className="w-full h-[80px] flex justify-between items-center bg-rose-700 text-slate-200 text-lg tracking-widest font-semibold transition all duration-300 ">
       {/* Home */}
@@ -23,9 +25,15 @@ const Navbar = () => {
           <li>
             <Link to="/savedrecipe">Saved Recipe</Link>
           </li>
-          <li>
-            <Link to="/login">Login/Sign Up</Link>
-          </li>
+          {userLoggedIn ? (
+            <li>
+              <Link to="/logout">Logout</Link>
+            </li>
+          ) : (
+            <li>
+              <Link to="/login">Login/Sign Up</Link>
+            </li>
+          )}
         </ul>
       </div>
       {/* Responsive Navbar */}

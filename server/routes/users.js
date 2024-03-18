@@ -2,9 +2,25 @@ import express from "express";
 import UserModel from "../Model/Schema.js";
 import RecipeModel from "../Model/Recipes.js";
 import bcrypt from "bcrypt";
+import { verifyJWT } from "../middleware/auth.js";
 
 const router = express.Router();
 
+const genereteToken = async (userId) => {
+  try {
+    const user = await UserModel.findById(userId);
+    const accessToken = await user.generateAccessToken();
+
+    return accessToken;
+  } catch (err) {
+    res.status(500).json({
+      status: false,
+      message: "Something went wrong while generating token",
+    });
+  }
+};
+
+// registering a user
 router.post("/register", async (req, res) => {
   const { userName, password, confirm_password } = req.body;
 
@@ -35,6 +51,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// signing in a user
 router.post("/login", async (req, res) => {
   try {
     const { userName, password } = req.body;
@@ -47,23 +64,55 @@ router.post("/login", async (req, res) => {
 
     const getUser = await UserModel.findOne({ userName: userName });
 
-    if (getUser) {
-      const isMatch = await bcrypt.compare(password, getUser.password);
-
-      if (isMatch) {
-        res.status(200).json({
-          message: "Login Successfully",
-        });
-      } else {
-        res.status(400).json({
-          err: "InCorrect Password",
-        });
-      }
-    } else {
-      res.status(400).json({
-        err: "invalid Username",
+    if (!getUser) {
+      res.status(404).json({
+        err: "User Does not exist",
       });
     }
+
+    const isMatch = await bcrypt.compare(password, getUser.password);
+
+    if (!isMatch) {
+      res.status(404).json({
+        err: "Invalid User credentials",
+      });
+    }
+
+    const accessToken = await genereteToken(getUser._id);
+
+    const loggedInUser = await UserModel.findById(getUser._id).select(
+      "-password -confirm_password"
+    );
+
+    const options = {
+      httpOnly: true,
+      secure: true,
+    };
+
+    return res.status(200).cookie("accessToken", accessToken, options).json({
+      success: true,
+      data: loggedInUser,
+      accessToken,
+      message: "User Logged In successfully",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// signinig out user - logout
+router.post("/logout", verifyJWT, async (req, res) => {
+  console.log(req.user);
+  try {
+    const options = {
+      httpOnly: true,
+      secure: true,
+    };
+
+    return res.status(200).clearCookie("accessToken", options).json({
+      success: true,
+      message: "User Logged out Successfully",
+    });
   } catch (err) {
     console.log(err);
   }
@@ -82,6 +131,33 @@ router.put("/register", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+});
+
+// get a user
+router.get("/getuser/:email", async (req, res) => {
+  const email = req.params.email;
+
+  try {
+    const getUser = await UserModel.findOne({ userName: email });
+    if (!getUser) {
+      res.status(404).json({
+        status: false,
+        message: "user not found",
+      });
+    } else {
+      res.status(200).json({
+        status: true,
+        user: getUser,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.get("/current-user", verifyJWT, async (req, res) => {
+  let user = req.user;
+  return res.status(200).json({ user, msg: "User fetched successfully" });
 });
 
 export { router as userRouter };

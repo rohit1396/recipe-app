@@ -1,8 +1,8 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import connect from "./DB/connect.js";
-import UserModel from "./Model/Schema.js";
 import { userRouter } from "./routes/users.js";
 import { recipesRouter } from "./routes/recipes.js";
 
@@ -13,10 +13,11 @@ dotenv.config({
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: ["http://localhost:5173"],
-    methods: ["POST", "GET"],
+    methods: ["POST", "GET", "PUT"],
     credentials: true,
   })
 );
@@ -24,6 +25,6 @@ app.use(
 app.use("/api", userRouter);
 app.use("/api", recipesRouter);
 
-const port = 5000;
+const port = process.env.PORT;
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
