@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAuth } from "../context/context";
 
 const CreateRecipe = () => {
   const [recipe, setRecipe] = useState({
@@ -7,13 +8,19 @@ const CreateRecipe = () => {
     imageUrl: "",
     instructions: "",
     cookingTime: 0,
-    userOwner: 0,
   });
+
+  const { userData, token } = useAuth();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setRecipe({ ...recipe, [name]: value });
     // console.log(recipe);
+  };
+
+  const handleFileChange = (event) => {
+    setRecipe(recipe.imageUrl(event.target.files[0]));
+    console.log(recipe.imageUrl);
   };
 
   const handleIngredientChange = (event, idx) => {
@@ -35,6 +42,7 @@ const CreateRecipe = () => {
       const response = await fetch("http://localhost:5000/api/create", {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -43,10 +51,19 @@ const CreateRecipe = () => {
           imageUrl: imageUrl,
           cookingTime: cookingTime,
           instructions: instructions,
-          userOwner: "65dc0aa6e4cc6b07a994bb51",
+          userOwner: userData._id,
         }),
       });
       const data = await response.json();
+      alert("Recipe Created Succesfully");
+      setRecipe({
+        name: "",
+        ingredients: [],
+        imageUrl: "",
+        cookingTime: "",
+        instructions: "",
+        userOwner: "",
+      });
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -56,6 +73,7 @@ const CreateRecipe = () => {
     <div className="bg-slate-200 w-full min-h-screen flex justify-center">
       <form
         onSubmit={handleSubmit}
+        enctype="multipart/form-data"
         className="bg-slate-50 min-w-80 md:w-2/6 h-auto flex flex-col m-10 justify-center items-center border border-slate-400 rounded-md"
       >
         <input
@@ -85,12 +103,12 @@ const CreateRecipe = () => {
           Add Ingridients
         </button>
         <input
-          type="text"
+          type="file"
           placeholder="image"
           className="w-4/5 p-4 m-2 border border-rose-800 rounded-lg text-gray-800 text-lg font-normal outline-none"
           name="imageUrl"
           value={recipe.imageUrl}
-          onChange={handleChange}
+          onChange={handleFileChange}
         />
         <input
           type="text"

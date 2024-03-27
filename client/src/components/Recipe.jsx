@@ -1,11 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/context";
 
 const Recipe = ({ recipe }) => {
   const { _id, name, cookingTime, imageUrl, ingredients, instructions } =
     recipe;
 
-  const { user } = useAuth();
+  const { userData, token } = useAuth();
+
+  const [savedrecipes, setSavedRecipes] = useState([]);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/savedrecipes/id/${userData._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await response.json();
+        console.log(data);
+        setSavedRecipes(data.savedRecipes);
+        // console.log(savedrecipes);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchRecipes();
+  }, [userData]);
 
   const saveRecipe = async (_id) => {
     try {
@@ -16,7 +40,7 @@ const Recipe = ({ recipe }) => {
         },
         body: JSON.stringify({
           recipeID: _id,
-          userID: user._id,
+          userID: userData._id,
         }),
       });
     } catch (err) {
@@ -35,7 +59,7 @@ const Recipe = ({ recipe }) => {
         ))}
       </div>
       <p>{instructions}</p>
-      <p>Owned By : {user?.userName}</p>
+      <p>Owned By : {userData?.userName}</p>
       <button
         onClick={() => saveRecipe(_id)}
         className="w-1/4 h-10 bg-rose-600 text-slate-50 tracking-wider rounded-md outline-none border-none my-2 pointer"

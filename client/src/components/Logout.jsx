@@ -20,9 +20,11 @@ const Logout = () => {
     };
     logout();
   }, [logoutUser]);
+
   useEffect(() => {
     logoutUser();
   }, [logoutUser]);
+
   return <Navigate to="/login" />;
 };
 

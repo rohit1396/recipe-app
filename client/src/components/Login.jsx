@@ -17,6 +17,7 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        // credentials: "include",
         body: JSON.stringify({
           userName: userName,
           password: password,
@@ -24,7 +25,7 @@ const Login = () => {
       });
 
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
 
       if (response.status === 404 || !data) {
         window.alert("Login Failed");
