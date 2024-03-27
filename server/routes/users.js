@@ -102,7 +102,7 @@ router.post("/login", async (req, res) => {
 
 // signinig out user - logout
 router.post("/logout", verifyJWT, async (req, res) => {
-  console.log(req.user);
+  // console.log(req.user);
   try {
     const options = {
       httpOnly: true,
@@ -155,9 +155,25 @@ router.get("/getuser/:email", async (req, res) => {
   }
 });
 
+// get current user
 router.get("/current-user", verifyJWT, async (req, res) => {
-  let user = req.user;
-  return res.status(200).json({ user, msg: "User fetched successfully" });
+  try {
+    const getUser = await UserModel.findById(req.user._id);
+    console.log(getUser);
+
+    if (!getUser) {
+      res.status(404).json({
+        status: false,
+        message: "user not found",
+      });
+    }
+
+    return res
+      .status(200)
+      .json({ user: getUser, msg: "User fetched successfully" });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 export { router as userRouter };
