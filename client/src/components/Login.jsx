@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/context";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [userName, setUserName] = useState("");
@@ -28,9 +29,9 @@ const Login = () => {
       // console.log(data);
 
       if (response.status === 404 || !data) {
-        window.alert("Login Failed");
+        toast.error("Login Failed");
       } else {
-        window.alert("Login Successfully");
+        toast.success("Login Successfully");
         setLocalStorage(data.accessToken);
         navigate("/");
       }
