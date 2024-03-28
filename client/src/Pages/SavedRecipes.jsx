@@ -28,6 +28,7 @@ const SavedRecipes = () => {
     };
     fetchRecipes();
   }, []);
+
   return (
     <div className="w-full h-auto flex flex-col justify-center items-center border border-rose-400">
       <div className="w-1/3 min-w-80">
@@ -37,18 +38,27 @@ const SavedRecipes = () => {
               key={recipe._id}
               className="text-gray-400 p-5 m-5 border border-2 border-pink-800 rounded-md"
             >
-              <h5 className="font-bold text-2xl tracking-widest">
+              <h5 className="capitalize font-bold text-gray-700 text-3xl tracking-widest">
                 {recipe.name}
               </h5>
-              <span>Required Time : {recipe.cookingTime}</span>
+              <h4 className="font-semibold text-gray-600 text-2xl tracking-widest my-1">
+                Required Time : {recipe.cookingTime}
+              </h4>
               <img src={recipe.imageUrl} alt="img" />
-              <div>
-                Ingridients :
+              <div className="font-light text-gray-500 text-xl my-1 tracking-wider">
+                <h4 className="font-semibold text-2xl text-gray-500">
+                  Ingredients :{" "}
+                </h4>
                 {recipe.ingredients.map((item) => (
-                  <span key={item}>{` ${item},  `}</span>
+                  <li key={item}>{item}</li>
                 ))}
               </div>
-              <p>{recipe.instructions}</p>
+              <h4 className="font-semibold text-2xl text-gray-500 my-1">
+                Instructions :{" "}
+              </h4>
+              <p className="font-medium text-gray-400 text-lg tracking-widest">
+                {recipe.instructions}
+              </p>
             </div>
           );
         })}

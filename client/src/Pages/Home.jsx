@@ -28,7 +28,7 @@ const Home = () => {
     fetchRecipes();
   }, [userData]);
   return (
-    <div className="w-full h-auto flex flex-col justify-center items-center border border-rose-400">
+    <div className="w-full h-auto flex flex-col justify-center items-center">
       {userLoggedIn ? (
         userData ? (
           <div className="w-1/3 min-w-80">
@@ -37,15 +37,17 @@ const Home = () => {
             })}
           </div>
         ) : (
-          <Oval
-            visible={true}
-            height="100"
-            width="100"
-            color="#9f1239"
-            ariaLabel="oval-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-          />
+          <div className="flex relative w-80 h-80 justify-center items-center">
+            <Oval
+              visible={true}
+              height="100"
+              width="100"
+              color="#9f1239"
+              ariaLabel="oval-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+          </div>
         )
       ) : (
         <div className="flex flex-col justify-center items-center w-1/3 min-w-80 h-72">

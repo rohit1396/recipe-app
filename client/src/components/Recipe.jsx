@@ -8,6 +8,7 @@ const Recipe = ({ recipe }) => {
   const { userData, token } = useAuth();
 
   const [savedrecipes, setSavedRecipes] = useState([]);
+  const [disabledButton, setDisabledButton] = useState(false);
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -43,28 +44,46 @@ const Recipe = ({ recipe }) => {
           userID: userData._id,
         }),
       });
+
+      const data = await response.json();
+      if (response.status === 200) {
+        setDisabledButton(true);
+      }
+      console.log(response);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const isRecipeAlreadySaved = (id) => savedrecipes.includes(id);
   return (
-    <div className="text-gray-400 p-5 m-5 border border-2 border-pink-800 rounded-md">
-      <h5 className="font-bold text-2xl tracking-widest">{name}</h5>
-      <span>Required Time : {cookingTime}</span>
+    <div className="capitalize p-5 m-5 border border-2 border-pink-800 rounded-md">
+      <h5 className="font-bold text-gray-700 text-3xl tracking-widest">
+        {name}
+      </h5>
+      <h4 className="font-semibold text-gray-600 text-2xl tracking-widest my-1">
+        Required Time : {cookingTime}
+      </h4>
       <img src={imageUrl} alt="img" />
-      <div>
-        Ingridients :
+      <div className="font-light text-gray-500 text-xl my-1 tracking-wider">
+        <h4 className="font-semibold text-2xl text-gray-500">Ingredients : </h4>
         {ingredients.map((item) => (
-          <span key={item}>{` ${item},  `}</span>
+          <li key={item}>{item} </li>
         ))}
       </div>
-      <p>{instructions}</p>
-      <p>Owned By : {userData?.userName}</p>
+      <h4 className="font-semibold text-2xl text-gray-500">Instructions : </h4>
+      <p className="font-medium text-gray-400 text-lg tracking-widest">
+        {instructions}
+      </p>
+      {/* <p>Owned By : {userData?.userName}</p> */}
       <button
         onClick={() => saveRecipe(_id)}
-        className="w-1/4 h-10 bg-rose-600 text-slate-50 tracking-wider rounded-md outline-none border-none my-2 pointer"
+        disabled={isRecipeAlreadySaved(_id)}
+        className={`w-fit h-10 px-2 bg-rose-600 text-md text-slate-50 tracking-wide rounded-md outline-none border-none my-2 cursor-pointer ${
+          disabledButton ? "cursor-not-allowed" : ""
+        }`}
       >
-        Save
+        {isRecipeAlreadySaved(_id) ? "Already Saved" : "save"}
       </button>
     </div>
   );
