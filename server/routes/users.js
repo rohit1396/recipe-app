@@ -125,7 +125,7 @@ router.put("/register", async (req, res) => {
   try {
     user.savedRecipes.push(recipe);
     await user.save();
-    res.json({
+    res.status(200).json({
       savedRecipes: user?.savedRecipes,
     });
   } catch (err) {
