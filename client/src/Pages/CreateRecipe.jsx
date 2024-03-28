@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useAuth } from "../context/context";
 
 const CreateRecipe = () => {
+  const [file, setFile] = useState(null);
   const [recipe, setRecipe] = useState({
     name: "",
     ingredients: [],
-    imageUrl: "",
     instructions: "",
     cookingTime: 0,
   });
@@ -19,8 +19,8 @@ const CreateRecipe = () => {
   };
 
   const handleFileChange = (event) => {
-    setRecipe(recipe.imageUrl(event.target.files[0]));
-    console.log(recipe.imageUrl);
+    setFile(event.target.files[0]);
+    // console.log(recipe.imageUrl);
   };
 
   const handleIngredientChange = (event, idx) => {
@@ -37,22 +37,23 @@ const CreateRecipe = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, ingredients, imageUrl, cookingTime, instructions } = recipe;
+
+    const { name, ingredients, cookingTime, instructions } = recipe;
+    const formDataToSend = new FormData();
+
+    formDataToSend.append("imageUrl", file);
+    formDataToSend.append("name", name);
+    formDataToSend.append("ingredients", ingredients);
+    formDataToSend.append("cookingTime", cookingTime);
+    formDataToSend.append("instructions", instructions);
+    formDataToSend.append("userOwner", userData._id);
     try {
       const response = await fetch("http://localhost:5000/api/create", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name: name,
-          ingredients: ingredients,
-          imageUrl: imageUrl,
-          cookingTime: cookingTime,
-          instructions: instructions,
-          userOwner: userData._id,
-        }),
+        body: formDataToSend,
       });
       const data = await response.json();
       alert("Recipe Created Succesfully");
@@ -64,6 +65,7 @@ const CreateRecipe = () => {
         instructions: "",
         userOwner: "",
       });
+      setFile(null);
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -73,7 +75,6 @@ const CreateRecipe = () => {
     <div className="bg-slate-200 w-full min-h-screen flex justify-center">
       <form
         onSubmit={handleSubmit}
-        enctype="multipart/form-data"
         className="bg-slate-50 min-w-80 md:w-2/6 h-auto flex flex-col m-10 justify-center items-center border border-slate-400 rounded-md"
       >
         <input
@@ -107,7 +108,7 @@ const CreateRecipe = () => {
           placeholder="image"
           className="w-4/5 p-4 m-2 border border-rose-800 rounded-lg text-gray-800 text-lg font-normal outline-none"
           name="imageUrl"
-          value={recipe.imageUrl}
+          // value={recipe.imageUrl}
           onChange={handleFileChange}
         />
         <input
