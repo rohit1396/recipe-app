@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/context";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const CreateRecipe = () => {
   const [file, setFile] = useState(null);
@@ -9,6 +11,7 @@ const CreateRecipe = () => {
     instructions: "",
     cookingTime: 0,
   });
+  const navigate = useNavigate();
 
   const { userData, token } = useAuth();
 
@@ -43,7 +46,7 @@ const CreateRecipe = () => {
 
     formDataToSend.append("imageUrl", file);
     formDataToSend.append("name", name);
-    formDataToSend.append("ingredients", ingredients);
+    formDataToSend.append("ingredients", JSON.stringify(ingredients));
     formDataToSend.append("cookingTime", cookingTime);
     formDataToSend.append("instructions", instructions);
     formDataToSend.append("userOwner", userData._id);
@@ -56,7 +59,7 @@ const CreateRecipe = () => {
         body: formDataToSend,
       });
       const data = await response.json();
-      alert("Recipe Created Succesfully");
+      toast.success("Recipe Created Succesfully");
       setRecipe({
         name: "",
         ingredients: [],
@@ -66,7 +69,7 @@ const CreateRecipe = () => {
         userOwner: "",
       });
       setFile(null);
-      console.log(data);
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -101,7 +104,7 @@ const CreateRecipe = () => {
           className="w-4/5 h-8 p-1 m-1 bg-rose-800 rounded-lg text-slate-50 text-sm font-normal outline-none tracking-widest"
           onClick={handleAddIngredient}
         >
-          Add Ingridients
+          Add Ingredients
         </button>
         <input
           type="file"
