@@ -31,7 +31,7 @@ const SavedRecipes = () => {
 
   return (
     <div className="w-full h-auto flex flex-col justify-center items-center border border-rose-400">
-      <div className="w-1/3 min-w-80">
+      <div className="w-full md:max-w-lg">
         {savedrecipes?.map((recipe) => {
           return (
             <div
@@ -44,7 +44,11 @@ const SavedRecipes = () => {
               <h4 className="font-semibold text-gray-600 text-2xl tracking-widest my-1">
                 Required Time : {recipe.cookingTime}
               </h4>
-              <img src={recipe.imageUrl} alt="img" />
+              <img
+                className="w-full h-80 object-cover"
+                src={recipe.imageUrl}
+                alt="img"
+              />
               <div className="font-light text-gray-500 text-xl my-1 tracking-wider">
                 <h4 className="font-semibold text-2xl text-gray-500">
                   Ingredients :{" "}

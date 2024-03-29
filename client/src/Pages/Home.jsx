@@ -5,8 +5,8 @@ import { Oval } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 
 const Home = () => {
-  // const [recipes, setRecipes] = useState([]);
-  const { recipes, setRecipes, userLoggedIn, userData, token } = useAuth();
+  const [recipes, setRecipes] = useState([]);
+  const { userLoggedIn, userData, token } = useAuth();
   // console.log(userData);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const Home = () => {
     <div className="w-full h-auto flex flex-col justify-center items-center">
       {userLoggedIn ? (
         userData ? (
-          <div className="w-1/3 min-w-80">
+          <div className="w-full md:max-w-lg min-w-80">
             {recipes.map((recipe) => {
               return <Recipe key={recipe._id} recipe={recipe} />;
             })}

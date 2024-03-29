@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/context";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Recipe = ({ recipe }) => {
   const { _id, name, cookingTime, imageUrl, ingredients, instructions } =
@@ -9,6 +11,7 @@ const Recipe = ({ recipe }) => {
 
   const [savedrecipes, setSavedRecipes] = useState([]);
   const [disabledButton, setDisabledButton] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -48,6 +51,8 @@ const Recipe = ({ recipe }) => {
       const data = await response.json();
       if (response.status === 200) {
         setDisabledButton(true);
+        toast.success("Recipe Saved Successfully");
+        navigate("/savedrecipe");
       }
       console.log(response);
     } catch (err) {
@@ -64,11 +69,12 @@ const Recipe = ({ recipe }) => {
       <h4 className="font-semibold text-gray-600 text-2xl tracking-widest my-1">
         Required Time : {cookingTime}
       </h4>
-      <img src={imageUrl} alt="img" />
+
+      <img className="w-full h-80 object-cover" src={imageUrl} alt="img" />
       <div className="font-light text-gray-500 text-xl my-1 tracking-wider">
         <h4 className="font-semibold text-2xl text-gray-500">Ingredients : </h4>
-        {ingredients.map((item) => (
-          <li key={item}>{item} </li>
+        {ingredients.map((item, idx) => (
+          <li key={item}>{`${item}`}</li>
         ))}
       </div>
       <h4 className="font-semibold text-2xl text-gray-500">Instructions : </h4>
