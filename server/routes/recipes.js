@@ -15,6 +15,7 @@ router.post(
   async (req, res) => {
     const { name, ingredients, instructions, cookingTime } = req.body;
     const imageUrlPath = req.file?.path;
+    const ingredientArray = JSON.parse(ingredients);
 
     try {
       if (!name || !ingredients || !instructions || !cookingTime) {
@@ -42,7 +43,7 @@ router.post(
 
       const recipe = new RecipeModel({
         name,
-        ingredients,
+        ingredients: ingredientArray,
         instructions,
         imageUrl: imageUrl.url,
         cookingTime,
