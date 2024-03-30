@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <AuthProvider>
       <BrowserRouter>
         <App />
-        <ToastContainer position="top-center" autoClose={2000} />
+        <ToastContainer position="top-center" autoClose={3000} />
       </BrowserRouter>
     </AuthProvider>
   </React.StrictMode>

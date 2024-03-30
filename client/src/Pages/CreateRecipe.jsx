@@ -75,10 +75,10 @@ const CreateRecipe = () => {
     }
   };
   return (
-    <div className="bg-slate-200 w-full min-h-screen flex justify-center">
+    <div className="bg-slate-200 w-full min-h-screen mt-20 flex justify-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-slate-50 min-w-80 md:w-2/6 h-auto flex flex-col m-10 justify-center items-center border border-slate-400 rounded-md"
+        className="bg-slate-50 w-full md:max-w-lg h-auto flex flex-col m-10 justify-center items-center border border-slate-400 rounded-md"
       >
         <input
           type="text"

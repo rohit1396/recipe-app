@@ -61,19 +61,24 @@ const Recipe = ({ recipe }) => {
   };
 
   const isRecipeAlreadySaved = (id) => savedrecipes.includes(id);
+
   return (
     <div className="capitalize p-5 m-5 border border-2 border-pink-800 rounded-md">
       <h5 className="font-bold text-gray-700 text-3xl tracking-widest">
         {name}
       </h5>
       <h4 className="font-semibold text-gray-600 text-2xl tracking-widest my-1">
-        Required Time : {cookingTime}
+        Required Time : {cookingTime} Mins
       </h4>
 
-      <img className="w-full h-80 object-cover" src={imageUrl} alt="img" />
+      <img
+        className="w-full h-80 object-cover rounded-md"
+        src={imageUrl}
+        alt="img"
+      />
       <div className="font-light text-gray-500 text-xl my-1 tracking-wider">
         <h4 className="font-semibold text-2xl text-gray-500">Ingredients : </h4>
-        {ingredients.map((item, idx) => (
+        {ingredients.map((item) => (
           <li key={item}>{`${item}`}</li>
         ))}
       </div>
@@ -81,7 +86,6 @@ const Recipe = ({ recipe }) => {
       <p className="font-medium text-gray-400 text-lg tracking-widest">
         {instructions}
       </p>
-      {/* <p>Owned By : {userData?.userName}</p> */}
       <button
         onClick={() => saveRecipe(_id)}
         disabled={isRecipeAlreadySaved(_id)}

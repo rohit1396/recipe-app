@@ -9,26 +9,32 @@ const Home = () => {
   const { userLoggedIn, userData, token } = useAuth();
   // console.log(userData);
 
+  const fetchRecipes = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/getall", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+      setRecipes(data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/getall", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        console.log(data);
-        setRecipes(data.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
     fetchRecipes();
   }, [userData]);
+
+  useEffect(() => {
+    fetchRecipes();
+  }, []);
+
   return (
-    <div className="w-full h-auto flex flex-col justify-center items-center">
+    <div className="w-full h-auto mt-20 flex flex-col justify-center items-center">
       {userLoggedIn ? (
         userData ? (
           <div className="w-full md:max-w-lg min-w-80">

@@ -3,22 +3,23 @@ import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { GrClose } from "react-icons/gr";
 import { useAuth } from "../context/context";
+import { SiFoodpanda } from "react-icons/si";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
   const { userLoggedIn } = useAuth();
   return (
-    <div className="w-full h-[80px] flex justify-between items-center bg-rose-700 text-slate-200 text-lg tracking-widest font-semibold transition all duration-300 ">
+    <div className="w-full h-[80px] fixed top-0 flex justify-between items-center bg-rose-700 text-slate-200 text-lg tracking-widest font-semibold transition all duration-300 ">
       {/* Home */}
       <span className="p-5">
-        <Link to="/">Home</Link>
+        <Link to="/">
+          <SiFoodpanda className="w-12 h-16 text-slate-50" />
+        </Link>
       </span>
+
       {/* Route Links */}
       <div className="hidden md:w-4/6 md:flex">
-        <ul className="w-full flex justify-around">
-          <li>
-            <Link to="/">Home</Link>
-          </li>
+        <ul className="w-full flex items-center justify-around">
           <li>
             <Link to="/createrecipe">Create Recipe</Link>
           </li>
@@ -43,7 +44,11 @@ const Navbar = () => {
             onClick={() => setShow(!show)}
             className="transition ease-in-out duration-500"
           >
-            {show ? <GrClose /> : <GiHamburgerMenu />}
+            {show ? (
+              <GrClose className="w-8 h-8 text-slate-50" />
+            ) : (
+              <GiHamburgerMenu className="w-8 h-8 text-slate-50" />
+            )}
           </button>
         </div>
       </div>
@@ -55,11 +60,6 @@ const Navbar = () => {
       >
         <ul className="flex flex-col h-4/6 justify-evenly items-center">
           <li>
-            <Link to="/" onClick={() => setShow(!show)}>
-              Home
-            </Link>
-          </li>
-          <li>
             <Link to="/createrecipe" onClick={() => setShow(!show)}>
               Create Recipe
             </Link>
@@ -69,11 +69,19 @@ const Navbar = () => {
               Saved Recipe
             </Link>
           </li>
-          <li>
-            <Link to="/login" onClick={() => setShow(!show)}>
-              Login/Sign Up
-            </Link>
-          </li>
+          {userLoggedIn ? (
+            <li>
+              <Link to="/logout" onClick={() => setShow(!show)}>
+                Logout
+              </Link>
+            </li>
+          ) : (
+            <li>
+              <Link to="/login" onClick={() => setShow(!show)}>
+                Login/Sign Up
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
     </div>
