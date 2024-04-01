@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
   const { userName, password, confirm_password } = req.body;
 
   if (!userName || !password || !confirm_password) {
-    return res.status(422).json({
+    return res.status(400).json({
       err: "Please Fill all the required fields",
     });
   }
@@ -34,9 +34,9 @@ router.post("/register", async (req, res) => {
     const userExist = await UserModel.findOne({ userName: userName });
 
     if (userExist) {
-      return res.status(422).json({ err: "User Already Exists" });
+      return res.status(409).json({ err: "User Already Exists" });
     } else if (password !== confirm_password) {
-      res.status(422).json({ err: "Password Not Matching" });
+      res.status(401).json({ err: "Password Not Matching" });
     } else {
       const user = new UserModel({ userName, password, confirm_password });
 
@@ -73,7 +73,7 @@ router.post("/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, getUser.password);
 
     if (!isMatch) {
-      res.status(404).json({
+      res.status(401).json({
         err: "Invalid User credentials",
       });
     }
