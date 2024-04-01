@@ -10,7 +10,6 @@ const Recipe = ({ recipe }) => {
   const { userData, token } = useAuth();
 
   const [savedrecipes, setSavedRecipes] = useState([]);
-  const [disabledButton, setDisabledButton] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,7 +49,6 @@ const Recipe = ({ recipe }) => {
 
       const data = await response.json();
       if (response.status === 200) {
-        setDisabledButton(true);
         toast.success("Recipe Saved Successfully");
         navigate("/savedrecipe");
       }
@@ -89,9 +87,7 @@ const Recipe = ({ recipe }) => {
       <button
         onClick={() => saveRecipe(_id)}
         disabled={isRecipeAlreadySaved(_id)}
-        className={`w-fit h-10 px-2 bg-rose-600 text-md text-slate-50 tracking-wide rounded-md outline-none border-none my-2 cursor-pointer ${
-          disabledButton ? "cursor-not-allowed" : ""
-        }`}
+        className="w-fit h-10 px-2 bg-rose-600 text-md text-slate-50 tracking-wide rounded-md outline-none border-none my-2 cursor-pointer"
       >
         {isRecipeAlreadySaved(_id) ? "Already Saved" : "save"}
       </button>

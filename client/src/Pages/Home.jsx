@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
   const { userLoggedIn, userData, token } = useAuth();
-  // console.log(userData);
 
   const fetchRecipes = async () => {
     try {

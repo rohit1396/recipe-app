@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [userName, setUserName] = useState("");
@@ -24,10 +25,14 @@ const Signup = () => {
       });
       const data = await response.json();
       console.log(data);
-      if (response.status === 422 || !data) {
-        window.alert("failed to registered");
+      if (response.status === 400) {
+        toast.error("Please Fill The Required Fields");
+      } else if (response.status === 409) {
+        toast.error("User Already Exists");
+      } else if (response.status === 401) {
+        toast.error("Passwords Not Matching");
       } else {
-        window.alert("User registration Successfull");
+        toast.success("User Registered Successfull");
         navigate("/login");
       }
     } catch (err) {

@@ -28,8 +28,12 @@ const Login = () => {
       const data = await response.json();
       // console.log(data);
 
-      if (response.status === 404 || !data) {
-        toast.error("Login Failed");
+      if (response.status === 400) {
+        toast.error("Please Fill The Required Fields");
+      } else if (response.status === 404) {
+        toast.error("Invalid Username Or Email Id");
+      } else if (response.status === 401) {
+        toast.error("Invalid User Credentials");
       } else {
         toast.success("Login Successfully");
         setLocalStorage(data.accessToken);

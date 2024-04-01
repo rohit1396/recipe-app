@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Recipe from "../components/Recipe";
 import { useAuth } from "../context/context";
 import { Link } from "react-router-dom";
 
