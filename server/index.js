@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["https://recipe-app-rg.vercel.app"],
+    origin: "https://recipe-app-rg.vercel.app",
     methods: ["POST", "GET", "PUT"],
     credentials: true,
   })
