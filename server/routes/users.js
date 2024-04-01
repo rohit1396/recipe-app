@@ -1,7 +1,8 @@
 import express from "express";
 import UserModel from "../Model/Schema.js";
 import RecipeModel from "../Model/Recipes.js";
-import bcrypt from "bcrypt";
+// import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { verifyJWT } from "../middleware/auth.js";
 
 const router = express.Router();
