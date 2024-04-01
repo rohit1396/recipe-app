@@ -11,7 +11,7 @@ const SavedRecipes = () => {
     const fetchRecipes = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/savedrecipes/${userData._id}`,
+          `https://recipe-app-qzae.onrender.com/api/savedrecipes/${userData._id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

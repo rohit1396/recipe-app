@@ -11,18 +11,21 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          userName: userName,
-          password: password,
-          confirm_password: confirm_password,
-        }),
-      });
+      const response = await fetch(
+        "https://recipe-app-qzae.onrender.com/api/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            userName: userName,
+            password: password,
+            confirm_password: confirm_password,
+          }),
+        }
+      );
       const data = await response.json();
       console.log(data);
       if (response.status === 400) {

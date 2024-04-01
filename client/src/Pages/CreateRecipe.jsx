@@ -51,13 +51,16 @@ const CreateRecipe = () => {
     formDataToSend.append("instructions", instructions);
     formDataToSend.append("userOwner", userData._id);
     try {
-      const response = await fetch("http://localhost:5000/api/create", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formDataToSend,
-      });
+      const response = await fetch(
+        "https://recipe-app-qzae.onrender.com/api/create",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formDataToSend,
+        }
+      );
       const data = await response.json();
       toast.success("Recipe Created Succesfully");
       setRecipe({

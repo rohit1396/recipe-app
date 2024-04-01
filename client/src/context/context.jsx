@@ -24,11 +24,14 @@ export const AuthProvider = ({ children }) => {
 
   const getCurrentUser = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/current-user", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://recipe-app-qzae.onrender.com/api/current-user",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const data = await response.json();
       console.log(data);
       setUserData(data?.user);

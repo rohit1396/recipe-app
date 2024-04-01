@@ -8,13 +8,16 @@ const Logout = () => {
 
   useEffect(() => {
     const logout = async () => {
-      const response = await fetch("http://localhost:5000/api/logout", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "content-type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://recipe-app-qzae.onrender.com/api/logout",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "content-type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
       console.log(data);
     };

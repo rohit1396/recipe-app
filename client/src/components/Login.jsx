@@ -13,17 +13,20 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // credentials: "include",
-        body: JSON.stringify({
-          userName: userName,
-          password: password,
-        }),
-      });
+      const response = await fetch(
+        "https://recipe-app-qzae.onrender.com/api/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // credentials: "include",
+          body: JSON.stringify({
+            userName: userName,
+            password: password,
+          }),
+        }
+      );
 
       const data = await response.json();
       // console.log(data);

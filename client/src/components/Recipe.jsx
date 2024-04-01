@@ -16,7 +16,7 @@ const Recipe = ({ recipe }) => {
     const fetchRecipes = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/savedrecipes/id/${userData._id}`,
+          `https://recipe-app-qzae.onrender.com/api/savedrecipes/id/${userData._id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -36,16 +36,19 @@ const Recipe = ({ recipe }) => {
 
   const saveRecipe = async (_id) => {
     try {
-      const response = await fetch("http://localhost:5000/api/register", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          recipeID: _id,
-          userID: userData._id,
-        }),
-      });
+      const response = await fetch(
+        "https://recipe-app-qzae.onrender.com/api/register",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            recipeID: _id,
+            userID: userData._id,
+          }),
+        }
+      );
 
       const data = await response.json();
       if (response.status === 200) {
