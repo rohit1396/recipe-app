@@ -25,8 +25,15 @@ router.post(
         });
       }
 
+      if (!req.user._id) {
+        res.status(401).json({
+          status: false,
+          message: "User Is Required to Login",
+        });
+      }
+
       if (!imageUrlPath) {
-        res.status(400).json({
+        res.status(404).json({
           status: false,
           err: "Image File is required",
         });
@@ -35,7 +42,7 @@ router.post(
       const imageUrl = await uploadOnCloudinary(imageUrlPath);
 
       if (!imageUrl.url) {
-        res.status(400).json({
+        res.status(404).json({
           status: false,
           err: "Image File is required",
         });
