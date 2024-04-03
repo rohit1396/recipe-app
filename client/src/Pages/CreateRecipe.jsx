@@ -61,8 +61,19 @@ const CreateRecipe = () => {
           body: formDataToSend,
         }
       );
+
       const data = await response.json();
-      toast.success("Recipe Created Succesfully");
+
+      if (response.status === 400) {
+        toast.error("Please Fill All The Required Fields");
+      } else if (response.status === 401) {
+        toast.error("User Needs to Login first");
+      } else if (response.status === 404) {
+        toast.error("Image File Is Required");
+      } else {
+        toast.success("Recipe Created Succesfully");
+      }
+
       setRecipe({
         name: "",
         ingredients: [],
