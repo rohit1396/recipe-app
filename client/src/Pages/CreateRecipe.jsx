@@ -72,18 +72,17 @@ const CreateRecipe = () => {
         toast.error("Image File Is Required");
       } else {
         toast.success("Recipe Created Succesfully");
+        setRecipe({
+          name: "",
+          ingredients: [],
+          imageUrl: "",
+          cookingTime: "",
+          instructions: "",
+          userOwner: "",
+        });
+        setFile(null);
+        navigate("/");
       }
-
-      setRecipe({
-        name: "",
-        ingredients: [],
-        imageUrl: "",
-        cookingTime: "",
-        instructions: "",
-        userOwner: "",
-      });
-      setFile(null);
-      navigate("/");
     } catch (err) {
       console.log(err);
     }
